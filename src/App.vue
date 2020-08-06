@@ -1,18 +1,19 @@
 <template>
   <div id="app">
     <img class="imagen" alt="Vue logo" src="https://i.pinimg.com/originals/04/5d/c1/045dc1a51ca8db75d5d6116e214a3a32.gif">
-    <HelloWorld msg="DoJOSHows"/>
+    <!--<NavMovie />-->
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  /*components: {
+    NavMovie
+  }*/
 }
 </script>
 
@@ -23,7 +24,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 
