@@ -78,7 +78,7 @@ export default {
             network: this.network,
             numberOfSeasons: parseInt(this.number),
             isCurrent: this.current,
-            genres: this.genres.split(' ')
+            genres: this.genres,
             })
             .then(() => {
               this.$router.push('/');

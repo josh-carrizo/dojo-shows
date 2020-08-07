@@ -32,7 +32,7 @@
                 <router-link class="link-Action" v-bind:to="{path: '/ActionShow/' + show.id +'/edit'}">
                   <i class="Small material-icons">edit</i>
                 </router-link>
-                <i class="Small material-icons" @click.prevent="deleteShow(id)">delete</i>
+                <i class="Small material-icons" @click.prevent="deleteShow(show.id)">delete</i>
               </td>
               <!--<td>{{ show.numberOfSeasons }}</td>
               <td><span v-for="(genre, i) in show.genres" :key="i">{{ genre }} </span></td>-->
@@ -132,7 +132,7 @@ export default {
 
     deleteShow(id) {
       console.log(id);
-      const respuesta = confirm('¿Desea borrar este show?');
+      const respuesta = confirm('¿Do you want to delete this show?');
       //if(!respuesta){return;}
       if (respuesta == false) { return; }
       db.collection("shows").doc(id).delete();
