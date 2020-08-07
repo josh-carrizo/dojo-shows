@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <!--tabla de datos-->
     <div class="row">
       <div class="col s2 m2"></div>
       <div class="col s8 m8">
@@ -10,28 +11,42 @@
             <tr>
               <th>Title</th>
               <th>Network</th>
-              <th>Seasons</th>
               <th>Current</th>
-              <th>Genres</th>
+              <th>Action</th>
+              <!--<th>Seasons</th>
+              <th>Genres</th>-->
             </tr>
           </thead>
           <tbody>
             <tr  v-for="(show, i) in shows" v-bind:key="i" >
               <td>   <router-link class="link-inicio" v-bind:to="{path: '/infoShow/' + show.id}">{{ show.title }}</router-link></td>
               <td>{{ show.network }}</td>
-              <td>{{ show.numberOfSeasons }}</td>
-              <td><span v-if="show.isCurrent"><img class="true_false"  src="https://www.shareicon.net/data/256x256/2017/05/09/885834_ok_512x512.png"></span><span v-else><img class="true_false"  src="https://cdn.iconscout.com/icon/free/png-256/false-delete-remove-cross-wrong-36-32770.png"></span></td>
-              <td><span v-for="(genre, i) in show.genres" :key="i">{{ genre }} </span></td>
+              <td>
+                <span v-if="show.isCurrent">
+                  <img class="true_false" src="https://www.shareicon.net/data/256x256/2017/05/09/885834_ok_512x512.png">
+                </span>
+                <span v-else><img class="true_false" src="https://cdn.iconscout.com/icon/free/png-256/false-delete-remove-cross-wrong-36-32770.png">
+                </span>
+              </td>
+              <td>
+                <router-link class="link-Action" v-bind:to="{path: '/ActionShow/' + show.id +'/edit'}">
+                  <i class="Small material-icons">edit</i>
+                </router-link>
+                <i class="Small material-icons" @click.prevent="deleteShow(id)">delete</i>
+              </td>
+              <!--<td>{{ show.numberOfSeasons }}</td>
+              <td><span v-for="(genre, i) in show.genres" :key="i">{{ genre }} </span></td>-->
             </tr>
           </tbody>
         </table>
       </div>
       <div class="col s2 m2"></div>
     </div>
+    <!--Agregar show-->
     <h3>Add New Show</h3>
     <div class="row">
       <div class="col s2 m2" ></div>
-        <form class="col s8 m8" @submit="addShow">
+        <form class="col s8 m8" @submit.prevent="addShow">
           <div class="row">
             <div class="input-field col s6">
               <input id="title" required="required" type="text" class="validate" v-model="addTitle">
@@ -76,13 +91,14 @@
 import { db } from '@/firebase';  
 
 export default {
-  name: 'HelloWorld',
+  name: 'Principal',
   props: {
     msg: String
   },
   data() {
     return {
-        shows: [],       // to start, the list is empty
+      shows: [],       // to start, the list is empty
+        
         addTitle: '',
         addNetwork: '',
         addNumber: '',
@@ -91,10 +107,14 @@ export default {
 
     }
   },
+  firestore() {           // adding this key/function
+    return {
+      shows: db.collection('shows')
+    }
+  },
   methods:{
-    addShow(ev){
-        ev.preventDefault()
-
+    addShow(){
+        
         console.log('Funciona AddShow')
         db.collection('shows').add({
           title: this.addTitle,
@@ -108,13 +128,16 @@ export default {
         this.addNumber= '';
         this.addCurrent= null;
         this.addGenres=[];
-    }
+    },
+
+    deleteShow(id) {
+      console.log(id);
+      const respuesta = confirm('¿Desea borrar este show?');
+      //if(!respuesta){return;}
+      if (respuesta == false) { return; }
+      db.collection("shows").doc(id).delete();
     
-  },
-    firestore() {           // adding this key/function
-    return {
-      shows: db.collection('shows')
-    }
+    },
   }
 }
 
